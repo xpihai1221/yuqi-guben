@@ -600,7 +600,7 @@ console.log("进入三步收紧流程");
 
 countDown(time,callback){
 
-
+console.log("进入 countDown，时间：", time);
 
     this.seconds=time;
 
