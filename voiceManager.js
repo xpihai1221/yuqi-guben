@@ -376,40 +376,59 @@ playFinish(){
     // 固定音频：开始
     // =========================
 
-   playStart(callback){
+playStart(callback){
 
+    if(!this.ready){
 
-    if(!this.ready)return;
+        if(callback){
+            callback();
+        }
 
+        return;
+    }
 
     let audio=this.sounds.start;
 
-
     audio.currentTime=0;
-
 
     this.speaking=true;
 
+    let finished=false;
 
-    audio.play();
+    const done=()=>{
 
+        if(finished){
+            return;
+        }
 
-
-    audio.onended=()=>{
-
+        finished=true;
 
         this.speaking=false;
 
-
         if(callback){
-
             callback();
-
         }
-
 
     };
 
+    audio.onended=done;
+
+    const promise=audio.play();
+
+    if(promise){
+
+        promise.catch(error=>{
+
+            console.log(
+                "开始语音播放失败，继续训练:",
+                error
+            );
+
+            done();
+
+        });
+
+    }
 
 },
 
@@ -417,39 +436,53 @@ playFinish(){
 // 动作名称语音
 // =========================
 
-playAction(name,callback){
-
+pplayAction(name,callback){
 
     let audio=this.actions[name];
-
 
     if(!audio){
 
         this.say(name,callback);
 
         return;
-
     }
-
 
     audio.currentTime=0;
 
+    let finished=false;
 
-    audio.play();
+    const done=()=>{
 
-
-    audio.onended=()=>{
-
-
-        if(callback){
-
-            callback();
-
+        if(finished){
+            return;
         }
 
+        finished=true;
+
+        if(callback){
+            callback();
+        }
 
     };
 
+    audio.onended=done;
+
+    const promise=audio.play();
+
+    if(promise){
+
+        promise.catch(error=>{
+
+            console.log(
+                "动作语音播放失败，继续训练:",
+                error
+            );
+
+            done();
+
+        });
+
+    }
 
 },
 
