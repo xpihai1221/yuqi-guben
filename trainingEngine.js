@@ -73,10 +73,6 @@ start(){
 
     setTimeout(()=>{
 
-
-        voiceManager.playStart();
-
-
         voiceManager.playStart(()=>{
 
 
