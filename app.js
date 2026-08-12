@@ -267,6 +267,8 @@ ${currentLevel.name}
 
 function startStage(type){
 
+ // 用户点击按钮的同步瞬间，先解锁音频
+    voiceManager.unlock();
 
 
 currentStage =
